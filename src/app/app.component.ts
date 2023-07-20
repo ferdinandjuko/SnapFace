@@ -3,13 +3,14 @@ import { MyFirstComponentComponent } from './my-first-component/my-first-compone
 import { SecondComponentComponent } from './second-component/second-component.component';
 import { FaceSnapComponent } from './face-snap/face-snap.component';
 import { FaceSnap } from './models/face-snap.model';
-import { UserServices } from 'src/Services/userServices';
+import { UserServices } from '../Services/userServices';
 import { BlinkDirective } from './blink.directive';
 import { CommonModule } from '@angular/common';
 import { FaceSnapListComponent } from './face-snap-list/face-snap-list.component';
 import { HeaderComponent } from './header/header.component';
 import { RouterModule } from '@angular/router';
 import { LandingPageComponent } from './landing-page/landing-page.component';
+import { interval } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -20,25 +21,21 @@ import { LandingPageComponent } from './landing-page/landing-page.component';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [
-    {
+  providers: [{
       provide: UserServices,
       useClass: UserServices
-  }
-]
+  }]
   // ViewEncapsulation: ViewEncapsulation.Emulated,
 })
 export class AppComponent implements OnInit {
   title = 'Angular Production';
   counter: number =  0;
   faceSnaps!: FaceSnap[];
-  userName: string = " ";
+  userName!: string;
 
   constructor(
     @Inject(UserServices) public UserService: UserServices
-  ) {
-      this.userName = "Ferdinand";
-  }
+  ) {}
   
   public testClick(): void {
     console.log("click")
@@ -48,9 +45,11 @@ export class AppComponent implements OnInit {
   //   console.log(e.target.value)
   // }
 
+  public ngOnInit(): void {
+    this.userName = "Ferdinand";
+    const interval$ = interval(1000);
 
-
-  ngOnInit() {
-      
+    setTimeout(() => interval$.subscribe(value => console.log(value)), 3000);
+    //interval$.subscribe(value => console.log(value));
   }
 }

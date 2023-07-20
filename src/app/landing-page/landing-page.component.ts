@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-landing-page',
@@ -9,6 +9,15 @@ import { RouterModule } from '@angular/router';
   templateUrl: './landing-page.component.html',
   styleUrls: ['./landing-page.component.css']
 })
-export class LandingPageComponent {
+export class LandingPageComponent implements OnInit {
 
+  constructor(private router: Router) { }
+
+  ngOnInit(): void {
+    
+  }
+  onContinue(): void {
+    console.log("continue")
+    this.router.navigateByUrl('facesnaps');
+  }
 }
