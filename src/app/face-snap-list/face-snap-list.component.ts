@@ -25,11 +25,7 @@ export class FaceSnapListComponent implements OnInit, OnDestroy {
   constructor(private faceSnapService:FaceSnapsService) { }
 
   ngOnInit(): void {
-    // this.faceSnaps = this.faceSnapService.getAllFaceSnaps();
-    // this.faceSnaps = this.faceSnapService.getAllFaceSnaps();
-    this.faceSnapService.getAllFaceSnaps().then((faceSnaps: FaceSnap[]) => {
-      this.faceSnaps = faceSnaps;
-    })
+    this.faceSnaps$ = this.faceSnapService.getAllFaceSnaps();
     this.destroy$ = new Subject<boolean>();
     
     interval(1000).pipe(
