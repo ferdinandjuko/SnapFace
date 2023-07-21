@@ -1,14 +1,16 @@
 import { Injectable } from '@angular/core';
 import { FaceSnap } from 'src/app/models/face-snap.model';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FaceSnapsService {
-
+  faceSnaps: FaceSnap[] = [];
+  url: string = 'http://localhost:3000/faceSnaps';
   constructor() { }
 
-  faceSnaps: FaceSnap[] = [
+  /*faceSnaps: FaceSnap[] = [
       {
         id: 1,
         title: 'Archibald',
@@ -37,22 +39,61 @@ export class FaceSnapsService {
       }
     ];
 
-    getAllFaceSnaps(): FaceSnap[] {
-      return this.faceSnaps;
+    getAllFaceSnaps(): Observable<FaceSnap[]> {
+      return this.http.get<FaceSnap[]>('http://localhost:3000/faceSnaps');
+    }*/
+    
+    async getAllFaceSnaps(): Promise<FaceSnap[]> {
+      const response = await fetch(this.url);
+      return await response.json() ?? [];
     }
 
-    getFaceSnapById(faceSnapId: number): FaceSnap {
+    /*getFaceSnapById(faceSnapId: number): FaceSnap {
       const faceSnap = this.faceSnaps.find(faceSnap => faceSnap.id === faceSnapId);
       if(!faceSnap) {
         throw new Error('FaceSnap not found');
       } else {
         return faceSnap;
       }
+    } */
+
+    async getFaceSnapById(faceSnapId: number): Promise<FaceSnap> {
+      const response = await fetch(`${this.url}/${faceSnapId}`);
+      return await response.json();
     }
 
-    snapFaceSnapById(faceSnapId: number, snapType: 'snap' | 'unsnap'): void {
+    /*snapFaceSnapById(faceSnapId: number, snapType: 'snap' | 'unsnap'): void {
       const faceSnap = this.getFaceSnapById(faceSnapId);
       snapType === "snap" ? faceSnap.snaps++: faceSnap.snaps--;
+    }*/
+
+    async snapFaceSnapById(faceSnapId: number, snapType: 'snap' | 'unsnap'): Promise<FaceSnap> {
+      const faceSnap = await this.getFaceSnapById(faceSnapId);
+      const newFaceSnap = {
+        ...faceSnap,
+        snaps: snapType === 'snap' ? faceSnap.snaps + 1 : faceSnap.snaps - 1
+      };
+      await fetch(`${this.url}/${faceSnapId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(newFaceSnap)
+      });
+      return newFaceSnap;
     }
 
+    submitApplication(email: string): void {
+      console.log('email',email);
+    }
+
+    addFaceSnap(formValue: {title: string, description: string, imageUrl: string, location?: string}): void {
+      /*const newFaceSnap: FaceSnap = {
+        ...formValue,
+        createdDate: new Date(),
+        snaps: 0,
+        id: this.faceSnaps[this.faceSnaps.length - 1].id + 1
+      };
+      this.faceSnaps.push(newFaceSnap);*/
+    }
 }

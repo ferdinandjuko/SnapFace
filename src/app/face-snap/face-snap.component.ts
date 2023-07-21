@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { FaceSnap } from '../models/face-snap.model';
 import { FaceSnapsService } from 'src/Services/face-snaps.service';
 import { Router } from '@angular/router';
+import { HttpClientModule } from '@angular/common/http'; // Importez HttpClientModule ici
 
 @Component({
   selector: 'app-face-snap',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, HttpClientModule],
   templateUrl: './face-snap.component.html',
   styleUrls: ['./face-snap.component.css']
 })

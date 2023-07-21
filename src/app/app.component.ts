@@ -1,8 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy, Inject } from '@angular/core';
-import { MyFirstComponentComponent } from './my-first-component/my-first-component.component';
-import { SecondComponentComponent } from './second-component/second-component.component';
 import { FaceSnapComponent } from './face-snap/face-snap.component';
-import { FaceSnap } from './models/face-snap.model';
 import { UserServices } from '../Services/userServices';
 import { BlinkDirective } from './blink.directive';
 import { CommonModule } from '@angular/common';
@@ -10,14 +7,16 @@ import { FaceSnapListComponent } from './face-snap-list/face-snap-list.component
 import { HeaderComponent } from './header/header.component';
 import { RouterModule } from '@angular/router';
 import { LandingPageComponent } from './landing-page/landing-page.component';
-import { interval } from 'rxjs';
+import { Observable, interval, of } from 'rxjs';
+import { concatMap, mergeMap, delay, exhaustMap, map, switchMap, take, tap } from 'rxjs/operators';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, MyFirstComponentComponent, SecondComponentComponent,
-    FaceSnapComponent, BlinkDirective, FaceSnapListComponent, HeaderComponent,
-    RouterModule, LandingPageComponent],
+  imports: [CommonModule, FaceSnapComponent, BlinkDirective,
+    FaceSnapListComponent, HeaderComponent, RouterModule,
+    LandingPageComponent, FormsModule],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -28,28 +27,39 @@ import { interval } from 'rxjs';
   // ViewEncapsulation: ViewEncapsulation.Emulated,
 })
 export class AppComponent implements OnInit {
-  title = 'Angular Production';
-  counter: number =  0;
-  faceSnaps!: FaceSnap[];
   userName!: string;
+  interval$!: Observable<string>;
+
+  redTrainsCalled = 0;
+  yellowTrainsCalled = 0;
 
   constructor(
     @Inject(UserServices) public UserService: UserServices
   ) {}
-  
-  public testClick(): void {
-    console.log("click")
-  }
-
-  // public textChange(e: any): void {
-  //   console.log(e.target.value)
-  // }
 
   public ngOnInit(): void {
+    
     this.userName = "Ferdinand";
-    const interval$ = interval(1000);
+    interval(500).pipe(
+      take(10),
+      map(value => value % 2 === 0 ? 'rouge' : 'jaune'),
+      tap(color => console.log(`La lumière s'allume en %c${color}`, `color: ${this.translateColor(color)}`)),
+      exhaustMap(color => this.getTrainObservable$(color)),
+      tap(train => console.log(`Train %c${train.color} ${train.trainIndex} arrivé !`, `font-weight: bold; color: ${this.translateColor(train.color)}`))
+    ).subscribe();
+  }
 
-    setTimeout(() => interval$.subscribe(value => console.log(value)), 3000);
-    //interval$.subscribe(value => console.log(value));
+  getTrainObservable$(color: 'rouge' | 'jaune') {
+    const isRedTrain = color === 'rouge';
+    isRedTrain ? this.redTrainsCalled++ : this.yellowTrainsCalled++;
+    const trainIndex = isRedTrain ? this.redTrainsCalled : this.yellowTrainsCalled;
+    console.log(`Train %c${color} ${trainIndex} appelé !`, `text-decoration: underline; color: ${this.translateColor(color)}`);
+    return of({ color, trainIndex }).pipe(
+      delay(isRedTrain ? 5000 : 6000)
+    );
+  }
+
+  translateColor(color: 'rouge' | 'jaune') {
+    return color === 'rouge' ? 'red' : 'yellow';
   }
 }

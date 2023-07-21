@@ -1,4 +1,10 @@
 <div class="landing-block">
+    <form [formGroup]="applyForm" (submit)="submitApplication()">
+        <label for="emailInput">Inscrivez-vous pour recevoir notre newsletter !</label>
+        <label for="emailInput">Email: </label>
+        <input type="email" id="emailInput" formControlName="email">
+        <button type="submit">OK!</button>
+    </form>
     <img src="assets/snapface.png" alt="Snapface logo">
     <div class="landing-links">
       <button (click)="onContinue()">Continuer vers Snapface</button>
