@@ -5,9 +5,9 @@ import { SingleFaceSnapComponent } from "./single-face-snap/single-face-snap.com
 import { NewFaceSnapComponent } from "./new-face-snap/new-face-snap.component";
 
 const routerConfig: Routes = [
-    {path: 'facesnaps/:id', component: SingleFaceSnapComponent},
-    {path: 'facesnaps', component: FaceSnapListComponent},
-    { path: 'create', component: NewFaceSnapComponent},
+    { path: 'facesnaps/:id', component: SingleFaceSnapComponent },
+    { path: 'facesnaps', component: FaceSnapListComponent },
+    { path: 'create', component: NewFaceSnapComponent },
     { path: '', component: LandingPageComponent }
 ];
 
