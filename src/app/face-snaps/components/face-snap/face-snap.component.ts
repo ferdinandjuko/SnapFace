@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FaceSnap } from '../models/face-snap.model';
-import { FaceSnapsService } from 'src/Services/face-snaps.service';
+import { FaceSnap } from '../../../core/models/face-snap.model';
+import { FaceSnapsService } from 'src/app/core/Services/face-snaps.service';
 import { Router } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http'; // Importez HttpClientModule ici
 

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { FaceSnapsService } from 'src/Services/face-snaps.service';
+import { FaceSnapsService } from 'src/app/core/Services/face-snaps.service';
 import { HttpClientModule } from '@angular/common/http';
 
 @Component({

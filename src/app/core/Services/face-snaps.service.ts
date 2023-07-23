@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FaceSnap } from 'src/app/models/face-snap.model';
+import { FaceSnap } from 'src/app/core/models/face-snap.model';
 import { Observable, switchMap, map } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
@@ -34,7 +34,12 @@ export class FaceSnapsService {
     }
 
     submitApplication(email: string): void {
-      console.log('email',email);
+      if(email.includes('@') && email.includes('.') && email !== null) {
+        console.log(email);
+      } else {
+        console.log('invalid email');
+      }
+
     }
 
     addFaceSnap(formValue: {title: string, description: string, imageUrl: string, location?: string}): Observable<FaceSnap> {

@@ -1,15 +1,16 @@
 import { Component, OnInit, ChangeDetectionStrategy, Inject } from '@angular/core';
-import { FaceSnapComponent } from './face-snap/face-snap.component';
-import { UserServices } from '../Services/userServices';
+import { FaceSnapComponent } from './face-snaps/components/face-snap/face-snap.component';
+import { UserServices } from './core/Services/userServices';
 import { BlinkDirective } from './blink.directive';
-import { CommonModule } from '@angular/common';
-import { FaceSnapListComponent } from './face-snap-list/face-snap-list.component';
-import { HeaderComponent } from './header/header.component';
+import { CommonModule, registerLocaleData } from '@angular/common';
+import { FaceSnapListComponent } from './face-snaps/components/face-snap-list/face-snap-list.component';
+import { HeaderComponent } from './core/components/header/header.component';
 import { RouterModule } from '@angular/router';
-import { LandingPageComponent } from './landing-page/landing-page.component';
+import { LandingPageComponent } from './landing-page/components/landing-page/landing-page.component';
 import { Observable, interval, of } from 'rxjs';
 import { concatMap, mergeMap, delay, exhaustMap, map, switchMap, take, tap } from 'rxjs/operators';
 import { FormsModule } from '@angular/forms';
+import * as fr from '@angular/common/locales/fr';
 
 @Component({
   selector: 'app-root',
@@ -34,8 +35,11 @@ export class AppComponent implements OnInit {
   yellowTrainsCalled = 0;
 
   constructor(
-    @Inject(UserServices) public UserService: UserServices
-  ) {}
+    @Inject(UserServices) public UserService: UserServices,
+    
+  ) {
+    registerLocaleData(fr.default);
+  }
 
   public ngOnInit(): void {
     

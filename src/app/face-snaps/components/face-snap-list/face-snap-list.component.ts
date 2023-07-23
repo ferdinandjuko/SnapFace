@@ -1,8 +1,8 @@
 import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FaceSnap } from '../models/face-snap.model';
+import { FaceSnap } from '../../../core/models/face-snap.model';
 import { FaceSnapComponent } from '../face-snap/face-snap.component';
-import { FaceSnapsService } from 'src/Services/face-snaps.service';
+import { FaceSnapsService } from 'src/app/core/Services/face-snaps.service';
 import { Observable, Subject, interval, take, takeUntil, tap } from 'rxjs';
 import { concat } from 'rxjs';
 import { HttpClientModule } from '@angular/common/http';
